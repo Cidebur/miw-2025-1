@@ -68,12 +68,52 @@ namespace GeneticAlgorithmShowcase
         public override double CalculateFitness(List<byte> genotype)
         {
             List<double> parameters = coderDecoder.Decode(genotype);
-            double squaresSum = 0;
+            double fitness = 0;
             foreach((double x, double y) in points)
             {
-                squaresSum += Math.Pow(y - parameters[0] * Math.Sin(parameters[1] * x + parameters[2]), 2);
+                fitness += Math.Pow(y - parameters[0] * Math.Sin(parameters[1] * x + parameters[2]), 2);
             }
-            return -1 * squaresSum;
+            return -1 * fitness;
+        }
+    }
+
+    public class XORNeuralNetworkFitnessEvaluator : FitnessEvaluator
+    {
+        public XORNeuralNetworkFitnessEvaluator(CoderDecoder coderDecoder) : base(coderDecoder) { }
+
+        private List<(double, double, double)> trainingData = new List<(double, double, double)>
+        {
+            (0.0, 0.0, 0.0),
+            (0.0, 1.0, 1.0),
+            (1.0, 0.0, 1.0),
+            (1.0, 1.0, 0.0)
+        };
+
+        public override double CalculateFitness(List<byte> genotype)
+        {
+            List<double> parameters = coderDecoder.Decode(genotype);
+            double fitness = 0;
+            // Non-elegant approach:
+            foreach((double x1, double x2, double expected) in trainingData)
+            {
+                double output = parameters[8] +
+                                parameters[7] *
+                                (
+                                    parameters[0] * x1 + 
+                                    parameters[1] * x2 + 
+                                    parameters[2]
+                                ) +
+                                parameters[6] *
+                                (
+                                    parameters[3] * x1 + 
+                                    parameters[4] * x2 +
+                                    parameters[5]
+                                );
+                
+                
+                fitness += Math.Pow(expected - output, 2);
+            }
+            return -1 * fitness;
         }
     }
 }

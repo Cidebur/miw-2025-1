@@ -17,9 +17,24 @@
         //     population.Start(GENERATIONS);
         // }
 
-        const int MIN_VALUE = 0;
-        const int MAX_VALUE = 3;
-        const int NUMBER_OF_PARAMETERS = 3;
+        // const int MIN_VALUE = 0;
+        // const int MAX_VALUE = 3;
+        // const int NUMBER_OF_PARAMETERS = 3;
+        // const int LENGTH_PER_PARAMETER = 4;
+        // const int POPULATION_SIZE = 13;
+        // const int GENERATIONS = 100;
+        // const int TOURNAMENT_SIZE = 3;
+        // static void Main(string[] args)
+        // {
+        //     var coderDecoder = new CoderDecoder(LENGTH_PER_PARAMETER, NUMBER_OF_PARAMETERS, MIN_VALUE, MAX_VALUE);
+        //     var fitnessEvaluator = new FunctionApproximationFitnessEvaluator(coderDecoder);
+        //     var population = new Population2(POPULATION_SIZE, NUMBER_OF_PARAMETERS * LENGTH_PER_PARAMETER, fitnessEvaluator, TOURNAMENT_SIZE, crossoverPoints: new List<int> { 4, 8 });
+        //     population.Start(GENERATIONS);
+        // }
+
+        const int MIN_VALUE = -10;
+        const int MAX_VALUE = 10;
+        const int NUMBER_OF_PARAMETERS = 9;
         const int LENGTH_PER_PARAMETER = 4;
         const int POPULATION_SIZE = 13;
         const int GENERATIONS = 100;
@@ -27,7 +42,7 @@
         static void Main(string[] args)
         {
             var coderDecoder = new CoderDecoder(LENGTH_PER_PARAMETER, NUMBER_OF_PARAMETERS, MIN_VALUE, MAX_VALUE);
-            var fitnessEvaluator = new FunctionApproximationFitnessEvaluator(coderDecoder);
+            var fitnessEvaluator = new XORNeuralNetworkFitnessEvaluator(coderDecoder);
             var population = new Population2(POPULATION_SIZE, NUMBER_OF_PARAMETERS * LENGTH_PER_PARAMETER, fitnessEvaluator, TOURNAMENT_SIZE, crossoverPoints: new List<int> { 4, 8 });
             population.Start(GENERATIONS);
         }
