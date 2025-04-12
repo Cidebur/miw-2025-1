@@ -26,6 +26,18 @@ namespace GeneticAlgorithmShowcase
         }
         public abstract void Evolve();
 
+        public void Start(int generations)
+        {
+            System.Console.WriteLine("Generation 0:");
+            System.Console.WriteLine(this);
+            for (int i = 0; i < generations; i++)
+            {
+                Evolve();
+                System.Console.WriteLine($"Generation {i + 1}:");
+                System.Console.WriteLine(this);
+            }
+        }
+
         protected Individual tournamentSelection()
         {
             Random random = new Random();
