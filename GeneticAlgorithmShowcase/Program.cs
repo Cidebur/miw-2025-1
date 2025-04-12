@@ -13,7 +13,8 @@
         static void Main(string[] args)
         {
             var coderDecoder = new CoderDecoder(LENGTH_PER_PARAMETER, NUMBER_OF_PARAMETERS, MIN_VALUE, MAX_VALUE);
-            var population = new Population1(POPULATION_SIZE, GENOTYPE_SIZE, coderDecoder, TOURNAMENT_SIZE);
+            var fitnessEvaluator = new MutatedCarpetFitnessEvaluator(coderDecoder);
+            var population = new Population1(POPULATION_SIZE, GENOTYPE_SIZE, fitnessEvaluator, TOURNAMENT_SIZE);
             System.Console.WriteLine("Initial Population:");
             System.Console.WriteLine(population);
             for (int i = 0; i < GENERATIONS; i++)

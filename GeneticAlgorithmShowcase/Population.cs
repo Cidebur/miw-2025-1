@@ -7,21 +7,21 @@ namespace GeneticAlgorithmShowcase
         protected int populationSize;
         private int geneLength;
         private int tournamentSize;
-        private CoderDecoder coderDecoder;
+        private FitnessEvaluator fitnessEvaluator;
         private List<int> crossoverPoints;
-        public Population(int populationSize, int geneLength, CoderDecoder coderDecoder, int tournamentSize = 3, List<int>? crossoverPoints = null)
+        public Population(int populationSize, int geneLength, FitnessEvaluator fitnessEvaluator, int tournamentSize = 3, List<int>? crossoverPoints = null)
 
         {
             this.tournamentSize = tournamentSize;
             this.populationSize = populationSize;
             this.geneLength = geneLength;
-            this.coderDecoder = coderDecoder;
+            this.fitnessEvaluator = fitnessEvaluator;
             if (crossoverPoints == null) this.crossoverPoints = new List<int> {geneLength / 2};
             else this.crossoverPoints = crossoverPoints;
             individuals = new List<Individual>(populationSize);
             for (int i = 0; i < populationSize; i++)
             {
-                individuals.Add(new Individual(geneLength, this.coderDecoder));
+                individuals.Add(new Individual(geneLength, this.fitnessEvaluator));
             }
         }
         public abstract void Evolve();
@@ -60,14 +60,14 @@ namespace GeneticAlgorithmShowcase
             // System.Console.WriteLine("Children:");
             // System.Console.WriteLine(new Individual(child1Genotype, coderDecoder));
             // System.Console.WriteLine(new Individual(child2Genotype, coderDecoder));
-            return (new Individual(child1Genotype, coderDecoder), new Individual(child2Genotype, coderDecoder));
+            return (new Individual(child1Genotype, fitnessEvaluator), new Individual(child2Genotype, fitnessEvaluator));
         }
         protected void mutate(Individual individual)
         {
             Random random = new Random();
             int mutationPoint = random.Next(0, geneLength);
             individual.Genotype[mutationPoint] = (byte)(1 - individual.Genotype[mutationPoint]);
-            individual.CalculateFitness();
+            individual.CalculateFitness(fitnessEvaluator);
         }
         public override string ToString()
         {
@@ -78,7 +78,7 @@ namespace GeneticAlgorithmShowcase
 
     class Population1: Population
     {
-        public Population1(int populationSize, int geneLength, CoderDecoder coderDecoder, int tournamentSize = 3, List<int>? crossoverPoints = null) : base(populationSize, geneLength, coderDecoder, tournamentSize, crossoverPoints)
+        public Population1(int populationSize, int geneLength, FitnessEvaluator fitnessEvaluator, int tournamentSize = 3, List<int>? crossoverPoints = null) : base(populationSize, geneLength, fitnessEvaluator, tournamentSize, crossoverPoints)
         {
         }
 
@@ -104,7 +104,7 @@ namespace GeneticAlgorithmShowcase
     }
     class Population2: Population
     {
-        public Population2(int populationSize, int geneLength, CoderDecoder coderDecoder, int tournamentSize = 3, List<int>? crossoverPoints = null) : base(populationSize, geneLength, coderDecoder, tournamentSize, crossoverPoints)
+        public Population2(int populationSize, int geneLength, FitnessEvaluator fitnessEvaluator, int tournamentSize = 3, List<int>? crossoverPoints = null) : base(populationSize, geneLength, fitnessEvaluator, tournamentSize, crossoverPoints)
         {
         }
 

@@ -4,21 +4,18 @@ namespace GeneticAlgorithmShowcase
     {
         public List<byte> Genotype { get; private set; }
         public double Fitness { get; private set; }
-        private List<double> parameters;
 
-        public Individual(int geneLength, CoderDecoder coderDecoder)
+        public Individual(int geneLength, FitnessEvaluator fitnessEvaluator)
         {
             Genotype = new List<byte>(geneLength);
             randomizeGenes();
-            parameters = coderDecoder.Decode(Genotype);
-            CalculateFitness();
+            CalculateFitness(fitnessEvaluator);
         }
 
-        public Individual(List<byte> genotype, CoderDecoder coderDecoder)
+        public Individual(List<byte> genotype, FitnessEvaluator fitnessEvaluator)
         {
             Genotype = genotype;
-            parameters = coderDecoder.Decode(Genotype);
-            CalculateFitness();
+            CalculateFitness(fitnessEvaluator);
         }
 
         private void randomizeGenes()
@@ -29,10 +26,9 @@ namespace GeneticAlgorithmShowcase
                 Genotype.Add((byte)random.Next(0, 2));
             }
         }
-
-        public void CalculateFitness()
+        public void CalculateFitness(FitnessEvaluator fitnessEvaluator)
         {
-            Fitness = Math.Sin(parameters[0] * 0.05) + Math.Sin(parameters[1] * 0.05) + 0.4 * Math.Sin(parameters[0] * 0.15) * Math.Sin(parameters[1] * 0.15);
+            Fitness = fitnessEvaluator.CalculateFitness(Genotype);
         }
 
         public override string ToString()
